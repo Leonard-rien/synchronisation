@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sync Checkbox</title>
+  <!-- Ajoutez la configuration Firebase ci-dessous -->
+  <script src="https://www.gstatic.com/firebasejs/9.6.7/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.7/firebase-database.js"></script>
+  <script>
+    // Remplacez cette configuration par celle obtenue dans votre console Firebase
+    var firebaseConfig = {
+  apiKey: "AIzaSyADzKdcR1pFiHzl7LUtBVqGYYWFpqg1upI",
+  authDomain: "synchronisation-1f10f.firebaseapp.com",
+  databaseURL: "https://synchronisation-1f10f-default-rtdb.europe-west1.firebasedatabase.app",
+  projectId: "synchronisation-1f10f",
+  storageBucket: "synchronisation-1f10f.appspot.com",
+  messagingSenderId: "679642562850",
+  appId: "1:679642562850:web:abc5a5b80cc51784a4257b",
+  measurementId: "G-5LNNDR0EHL"
+};
+
+    // Initialisez Firebase
+    firebase.initializeApp(firebaseConfig);
+
+    // Référence à la base de données
+    var database = firebase.database();
+
+    // Fonction pour sauvegarder l'état de la checkbox
+    function saveCheckboxState() {
+      var checkboxState = document.getElementById('syncCheckbox').checked;
+      database.ref('checkboxState').set(checkboxState);
+    }
+
+    // Fonction pour charger l'état de la checkbox depuis la base de données
+    function loadCheckboxState() {
+      var checkbox = document.getElementById('syncCheckbox');
+      database.ref('checkboxState').once('value').then(function(snapshot) {
+        var state = snapshot.val();
+        checkbox.checked = state || false;
+      });
+    }
+  </script>
+</head>
+<body onload="loadCheckboxState()">
+  <label>
+    <input type="checkbox" id="syncCheckbox" onchange="saveCheckboxState()"> Synchroniser
+  </label>
+</body>
+</html>
